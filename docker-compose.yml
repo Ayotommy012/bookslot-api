@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: bookslot_dev
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: dev_secret_change_in_production
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bookslot_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
