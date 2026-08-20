@@ -36,14 +36,28 @@ cp .env.example .env   # fill in your local Postgres credentials + a JWT secret
 createdb bookslot_dev
 npm run dev
 ```
+## API Endpoints
+
+| Method | Route | Auth | Description |
+|---|---|---|---|
+| POST | `/api/auth/register` | — | Create account |
+| POST | `/api/auth/login` | — | Get JWT |
+| GET | `/api/resources` | — | List resources |
+| GET | `/api/resources/:resourceId/slots` | — | List open/full slots for a resource |
+| POST | `/api/resources` | Admin | Create a resource |
+| POST | `/api/resources/:resourceId/slots` | Admin | Create a slot |
+| POST | `/api/bookings` | User | Book a slot (capacity-safe, transaction-locked) |
+| GET | `/api/bookings/me` | User | List my bookings |
+| PATCH | `/api/bookings/:id/cancel` | User | Cancel a booking |
 
 ## Status
 
 Actively in development.
 
 - [x] Database schema, models, and associations
-- [ ] Auth (register/login, JWT)
-- [ ] Resource and booking routes
-- [ ] Capacity-safe booking logic (transaction + row lock)
-- [ ] Test suite
+- [x] Auth (register/login, JWT, role-based middleware)
+- [x] Resource and slot endpoints (public reads, admin-only writes)
+- [x] Booking endpoints (create, cancel, list mine)
+- [x] Capacity-safe booking logic (transaction + row lock) — manually verified: booking to capacity, rejecting overbooking, and cancellation reopening the slot all confirmed working
+- [ ] Automated test suite (including a concurrent-request test proving the row lock)
 - [ ] Deployment
