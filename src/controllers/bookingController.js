@@ -31,19 +31,23 @@ async function createBooking(req, res){
         return newBooking;
         });
         return res.status(201).json(booking);
-        } catch (err){
-            const knownErrors = {
-                SLOT_NOT_FOUND: [404, 'slot not found'],
-                SLOT_CANCELLED: [409, 'Slot has been cancelled'],
-                SLOT_FULL: [409, 'Slot is fully booked'],
-            };
-            if (knownErrors[err.message]){
-                const[statusCode, message] = knownErrors[err.message];
-                return res.status(statusCode).json({error: message});
-            }
-            console.error(err);
-            res.status(500).json({error: 'Internal server error'})
+            }  catch (err) {
+        const knownErrors = {
+            SLOT_NOT_FOUND: [404, 'slot not found'],
+            SLOT_CANCELLED: [409, 'Slot has been cancelled'],
+            SLOT_FULL: [409, 'Slot is fully booked'],
+        };
+        if (knownErrors[err.message]) {
+            const [statusCode, message] = knownErrors[err.message];
+            return res.status(statusCode).json({ error: message });
+        }
 
+        if (err.name === 'SequelizeUniqueConstraintError') {
+            return res.status(409).json({ error: 'You already booked this slot' });
+        }
+
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
