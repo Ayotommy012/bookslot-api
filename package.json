@@ -6,7 +6,8 @@
   "scripts": {
   "start": "node src/server.js",
   "dev": "nodemon src/server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "jest --runInBand",
+  "test:integration": "jest --config jest.integration.config.js --runInBand"
   },
   "keywords": [],
   "author": "",
