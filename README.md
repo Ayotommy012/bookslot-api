@@ -36,6 +36,16 @@ cp .env.example .env   # fill in your local Postgres credentials + a JWT secret
 createdb bookslot_dev
 npm run dev
 ```
+
+## Testing
+
+Two layers:
+
+npm test — fast unit suite, runs against in-memory SQLite
+npm run test:integration — runs the same booking suite against real Postgres
+
+SQLite can't run genuinely concurrent transactions, so the true concurrency test only runs under `test:integration`, against a real Postgres instance where the row lock is actually active. Confirmed passing: two simultaneous booking requests for the last open spot on a capacity-1 slot resolve to exactly one `201` and one `409`, with only one confirmed booking in the database afterward.
+
 ## API Endpoints
 
 | Method | Route | Auth | Description |
@@ -59,5 +69,5 @@ Actively in development.
 - [x] Resource and slot endpoints (public reads, admin-only writes)
 - [x] Booking endpoints (create, cancel, list mine)
 - [x] Capacity-safe booking logic (transaction + row lock) — manually verified: booking to capacity, rejecting overbooking, and cancellation reopening the slot all confirmed working
-- [ ] Automated test suite (including a concurrent-request test proving the row lock)
+- [x] Automated test suite — unit tests (SQLite) for business logic, integration test (real Postgres) proving the concurrency guarantee
 - [ ] Deployment
