@@ -9,8 +9,8 @@ async function start() {
         await sequelize.authenticate()
         console.log('Database connection established')
 
-        if(process.env.NODE_ENV == 'development'){
-            await sequelize.sync();
+        if (process.env.NODE_ENV !== 'test') {
+        await sequelize.sync();
         }
        app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
     } catch (error) {
