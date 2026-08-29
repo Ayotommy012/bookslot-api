@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node src/server.js",
-  "dev": "nodemon src/server.js",
-  "test": "jest --runInBand",
-  "test:integration": "jest --config jest.integration.config.js --runInBand"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand",
+    "test:integration": "jest --config jest.integration.config.js --runInBand"
   },
   "keywords": [],
   "author": "",
